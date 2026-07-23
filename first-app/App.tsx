@@ -4,7 +4,7 @@ import { StyleSheet, Text, View, TextInput, Image, Button } from 'react-native';
 export default function App() {
   return (
     <View >
-      <Image source={require('./images/67.jpg')} style={{width: 400, height: 400}}/>
+      <Image style={styles.image} source={require('./images/67.jpg')} />
       <Text style={styles.welcomeText}>Welcome to my app!</Text>
       <Text style={styles.headerText}>Enter your name:</Text>
       <TextInput style={styles.inputText} placeholder="Amy"/>
@@ -41,6 +41,12 @@ const styles = StyleSheet.create({
     margin: 12,
     borderWidth: 1,
     padding: 10,
+  },
+  image: {
+    width: 200,
+    height: 200,
+    marginTop: 50,
+    marginLeft: 100,
   },
 
 
