@@ -1,53 +1,81 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View, TextInput, Image, Button } from 'react-native';
+import { useState } from 'react';
+import { StyleSheet, Text, View, TextInput, Button, Image } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 export default function App() {
+   
+const Stack = createNativeStackNavigator();
+
   return (
-    <View >
-      <Image style={styles.image} source={require('./images/67.jpg')} />
-      <Text style={styles.welcomeText}>Welcome to my app!</Text>
-      <Text style={styles.headerText}>Enter your name:</Text>
-      <TextInput style={styles.inputText} placeholder="Amy"/>
-      <Text style={styles.headerText}>Enter your surname:</Text>
-      <TextInput style={styles.inputText} placeholder="Green"/>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen name="Main" component={MainScreen} />
+      </Stack.Navigator>
+      </NavigationContainer>
+  );
+}
+  
 
-      <Button title= "Add new user"/>
+function MainScreen() {
+  
+const[Name, setName] = useState('');
+const[Surname, setSurname] = useState('');
 
+console.log("App works!");
+
+
+
+  return (
+    
+  
+      <View>
+        <Image
+          source={require('./images/67.jpg')}
+          style={styles.image}
+        />
+
+      <Text style={styles.welcomeTxt}> welcome to my app</Text>
+
+      <Text style={styles.label}> Please enter your name</Text>
+      <View style={styles.divider} />
+      <TextInput placeholder="Bob" onChangeText={(newText) => setName(newText)} />
+
+      <Text style={styles.label}> Please enter your surname</Text>
+      <View style={styles.divider} />
+      <TextInput placeholder="builder" onChangeText={(newText) => setSurname(newText)} />
+
+      <Button title="Add user"
+        onPress={() => {
+          console.log("Name:" + Name + "Surname: " + Surname);
+        }}
+       />
       <StatusBar style="auto" />
     </View>
+    
   );
 }
 
 const styles = StyleSheet.create({
-  welcomeText: {
-    paddingTop: 60,
-    color: "blue",
-    fontWeight: "bold",
+  welcomeTxt: {
+    paddingTop: 100,
+    color: 'purple',
+    fontWeight: 'bold',
     fontSize: 30,
-    textAlign: "center",
-    backgroundColor: "white",
+    textAlign: 'center',
   },
-  headerText: {
-    paddingTop: 50,
-    color: "black",
-    fontWeight: "bold",
-    fontSize: 30,
-    textAlign: "center",
-    textDecorationLine: "underline",
-
+  label: {
+    fontWeight: 'bold',
   },
-  inputText: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
+  divider: {
+    height: 1,
+    backgroundColor: '#ccc',
+    marginVertical: 15,
   },
   image: {
-    width: 200,
-    height: 200,
-    marginTop: 50,
-    marginLeft: 100,
+    width: 150,
+    height: 150,
+    alignSelf: 'center',
   },
-
-
-});
+})
