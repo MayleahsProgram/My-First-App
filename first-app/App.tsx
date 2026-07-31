@@ -35,16 +35,31 @@ console.log("App works!");
           source={require('./images/67.jpg')}
           style={styles.image}
         />
-
+<View style={styles.inputFlex}>
       <Text style={styles.welcomeTxt}> welcome to my app</Text>
 
       <Text style={styles.label}> Please enter your name</Text>
       <View style={styles.divider} />
-      <TextInput placeholder="Bob" onChangeText={(newText) => setName(newText)} />
+      <TextInput
+      style={styles.input} 
+      placeholder="Bob" 
+      onChangeText={(newText) => setName(newText)} 
+      autoCapitalize="words"
+      autoCorrect={false}
+      keyboardType="default"
+      />
 
       <Text style={styles.label}> Please enter your surname</Text>
       <View style={styles.divider} />
-      <TextInput placeholder="builder" onChangeText={(newText) => setSurname(newText)} />
+      <TextInput 
+      style={styles.input} 
+      placeholder="builder" 
+      onChangeText={(newText) => setSurname(newText)} 
+      autoCapitalize="words"
+      autoCorrect={false}
+      keyboardType="default"
+      />
+      </View>
 
       <Button title="Add user"
         onPress={() => {
@@ -53,6 +68,8 @@ console.log("App works!");
        />
       <StatusBar style="auto" />
     </View>
+    
+    
     
   );
 }
@@ -78,4 +95,15 @@ const styles = StyleSheet.create({
     height: 150,
     alignSelf: 'center',
   },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginVertical: 10,
+    paddingHorizontal: 10,
+  },
+  inputFlex: {
+    justifyContent:'space-evenly',
+    marginTop: 20,
+  }
 })
