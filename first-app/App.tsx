@@ -12,6 +12,7 @@ const Stack = createNativeStackNavigator();
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen name="Main" component={MainScreen} />
+        <Stack.Screen name="View" component={ViewDetails} />
       </Stack.Navigator>
       </NavigationContainer>
   );
@@ -63,6 +64,7 @@ console.log("App works!");
 
       <Button title="Add user"
         onPress={() => {
+          navigation.navigate('View')
           console.log("Name:" + Name + "Surname: " + Surname);
         }}
        />
@@ -71,6 +73,14 @@ console.log("App works!");
     
     
     
+  );
+}
+
+function ViewDetails() {
+  return (
+    <View> style = {{flex: 1, justifyContent: 'center', alignItems: 'center'}}
+      <Text>Name : {Name} Surname : {Surname}</Text>
+    </View>
   );
 }
 
