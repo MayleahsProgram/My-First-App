@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
-import { useState } from 'react';
-import { StyleSheet, Text, View, TextInput, Button, Image } from 'react-native';
+import { useState , useRef , useEffect, ReactNode } from 'react';
+import { StyleSheet, Text, View, TextInput, Button, Image, SafeAreaView, ScrollView, Animated, StyleProp, ViewStyle } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator , NativeStackScreenProps } from '@react-navigation/native-stack';
 
@@ -48,13 +48,14 @@ console.log("App works!");
 
 return (
   <View>
-      
+    <SafeAreaView>
+      <ScrollView>
     <Image style ={styles.image}
     source={require('./images/67.jpg')}
   
         />
-        <Text style={styles.welcomeTxt}> welcome to my app</Text>
-
+        <Text style={styles.welcomeTxt}> Welcome to my app!</Text>
+  <FadeInView>
    <View style={styles.inputFlex}>
       <Text style={styles.headingTxt}> Enter your name:</Text>
       <TextInput style={styles.inputBoxTxt}
@@ -66,6 +67,7 @@ return (
         placeholder="builder"
         onChangeText={(newText) => setSurname(newText)} />
         </View>
+        </FadeInView>
       
       <Button title="Add user"
         onPress={() => {
@@ -76,7 +78,10 @@ return (
           
         }}/>
       <StatusBar style="auto" />
-    </View>
+
+      </ScrollView>
+      </SafeAreaView>
+      </View>
   
   );
 }
@@ -92,6 +97,36 @@ function ViewDetails({ navigation , route}:ViewDetailsProps){
     </View>
   );
 }
+
+interface FadeInViewProps {
+  children: ReactNode;
+  style?: StyleProp<ViewStyle>;
+}
+
+const FadeInView = ({children,style}: FadeInViewProps) => {
+  const fadeAnim = useRef(new Animated.Value(0)).current; // Initial value for opacity: 0
+
+  useEffect(() => {
+    Animated.timing(
+      fadeAnim,
+      {
+        toValue: 1,
+        duration: 4000,
+        useNativeDriver: false, // Allows to be run on an android device and avoids warning
+      }
+    ).start();
+  }, [fadeAnim]);
+
+  return(
+    <Animated.View                 
+      style={{
+        ...(style as object),
+        opacity: fadeAnim ,         
+      }}>
+      {children}
+      </Animated.View>
+  )
+};
 
 const styles = StyleSheet.create({
   welcomeTxt: {
