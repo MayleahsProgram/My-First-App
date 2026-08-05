@@ -2,16 +2,35 @@ import { StatusBar } from 'expo-status-bar';
 import { useState } from 'react';
 import { StyleSheet, Text, View, TextInput, Button, Image } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import { createNativeStackNavigator , NativeStackScreenProps } from '@react-navigation/native-stack';
+
+
+type RootStackParamList = {
+  Home: undefined;
+  View: {
+     NameSend: string;
+      SurnameSend: string;
+     };
+};
+
+const Stack = createNativeStackNavigator<RootStackParamList>();
+
+type MainScreenProps = NativeStackScreenProps<
+RootStackParamList, 
+'Home'
+>;
+
+type ViewDetailsProps = NativeStackScreenProps<
+RootStackParamList,
+ 'View'
+ >;
 
 export default function App() {
-   
-const Stack = createNativeStackNavigator();
 
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="Main" component={MainScreen} />
+        <Stack.Screen name="Home" component={MainScreen} />
         <Stack.Screen name="View" component={ViewDetails} />
       </Stack.Navigator>
       </NavigationContainer>
@@ -19,7 +38,7 @@ const Stack = createNativeStackNavigator();
 }
   
 
-function MainScreen() {
+function MainScreen({ navigation }: MainScreenProps){
   
 const[Name, setName] = useState('');
 const[Surname, setSurname] = useState('');
@@ -27,59 +46,49 @@ const[Surname, setSurname] = useState('');
 console.log("App works!");
 
 
-
-  return (
-    
+return (
+  <View>
+      
+    <Image style ={styles.image}
+    source={require('./images/67.jpg')}
   
-      <View>
-        <Image
-          source={require('./images/67.jpg')}
-          style={styles.image}
         />
-<View style={styles.inputFlex}>
-      <Text style={styles.welcomeTxt}> welcome to my app</Text>
+        <Text style={styles.welcomeTxt}> welcome to my app</Text>
 
-      <Text style={styles.label}> Please enter your name</Text>
-      <View style={styles.divider} />
-      <TextInput
-      style={styles.input} 
-      placeholder="Bob" 
-      onChangeText={(newText) => setName(newText)} 
-      autoCapitalize="words"
-      autoCorrect={false}
-      keyboardType="default"
-      />
+   <View style={styles.inputFlex}>
+      <Text style={styles.headingTxt}> Enter your name:</Text>
+      <TextInput style={styles.inputBoxTxt}
+       placeholder="Bob"
+        onChangeText={(newText) => setName(newText)} />
 
-      <Text style={styles.label}> Please enter your surname</Text>
-      <View style={styles.divider} />
-      <TextInput 
-      style={styles.input} 
-      placeholder="builder" 
-      onChangeText={(newText) => setSurname(newText)} 
-      autoCapitalize="words"
-      autoCorrect={false}
-      keyboardType="default"
-      />
-      </View>
-
+      <Text style={styles.headingTxt}> Enter your surname:</Text>
+      <TextInput style={styles.inputBoxTxt}
+        placeholder="builder"
+        onChangeText={(newText) => setSurname(newText)} />
+        </View>
+      
       <Button title="Add user"
         onPress={() => {
-          navigation.navigate('View')
-          console.log("Name:" + Name + "Surname: " + Surname);
-        }}
-       />
+          navigation.navigate('View', {
+             NameSend: Name, 
+             SurnameSend: Surname
+             });
+          
+        }}/>
       <StatusBar style="auto" />
     </View>
-    
-    
-    
+  
   );
 }
 
-function ViewDetails() {
+function ViewDetails({ navigation , route}:ViewDetailsProps){
+
+  const NameGet = route.params.NameSend;
+  const SurnameGet = route.params.SurnameSend;
+
   return (
-    <View> style = {{flex: 1, justifyContent: 'center', alignItems: 'center'}}
-      <Text>Name : {Name} Surname : {Surname}</Text>
+    <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <Text>Name : {NameGet} Surname : {SurnameGet}</Text>
     </View>
   );
 }
@@ -92,8 +101,10 @@ const styles = StyleSheet.create({
     fontSize: 30,
     textAlign: 'center',
   },
-  label: {
+  headingTxt: {
     fontWeight: 'bold',
+    fontSize: 18,
+    marginBottom: 10,
   },
   divider: {
     height: 1,
@@ -105,7 +116,7 @@ const styles = StyleSheet.create({
     height: 150,
     alignSelf: 'center',
   },
-  input: {
+  inputBoxTxt: {
     height: 40,
     borderColor: 'gray',
     borderWidth: 1,
